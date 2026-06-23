@@ -6,59 +6,51 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem("libraryUser");
-      return savedUser ? JSON.parse(savedUser) : null;
-    } catch (_error) {
-      localStorage.removeItem("libraryUser");
-      localStorage.removeItem("libraryToken");
+      const saved = localStorage.getItem("libraryUser");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
       return null;
     }
   });
   const [loading, setLoading] = useState(true);
 
+  // On mount, verify the stored token is still valid
   useEffect(() => {
-    const loadProfile = async () => {
-      const token = localStorage.getItem("libraryToken");
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+    const token = localStorage.getItem("libraryToken");
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
 
-      try {
-        const { data } = await api.get("/auth/me");
+    api
+      .get("/auth/me")
+      .then(({ data }) => {
         setUser(data.user);
         localStorage.setItem("libraryUser", JSON.stringify(data.user));
-      } catch (_error) {
+      })
+      .catch(() => {
+        setUser(null);
         localStorage.removeItem("libraryToken");
         localStorage.removeItem("libraryUser");
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProfile();
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const saveSession = (data) => {
+  const login = async (email, password) => {
+    const { data } = await api.post("/auth/login", { email, password });
     localStorage.setItem("libraryToken", data.token);
     localStorage.setItem("libraryUser", JSON.stringify(data.user));
     setUser(data.user);
+    return data.user;
   };
 
-  const login = async (payload) => {
-    const { data } = await api.post("/auth/login", payload);
-    saveSession(data);
-  };
-
-  const register = async (payload) => {
-    const { data } = await api.post("/auth/register", payload);
-    saveSession(data);
-  };
-
-  const socialLogin = async (payload) => {
-    const { data } = await api.post("/auth/social-login", payload);
-    saveSession(data);
+  const register = async (name, email, password) => {
+    const { data } = await api.post("/auth/register", { name, email, password });
+    localStorage.setItem("libraryToken", data.token);
+    localStorage.setItem("libraryUser", JSON.stringify(data.user));
+    setUser(data.user);
+    return data.user;
   };
 
   const logout = () => {
@@ -74,7 +66,6 @@ export const AuthProvider = ({ children }) => {
       isStaff: user?.role === "admin" || user?.role === "librarian",
       login,
       register,
-      socialLogin,
       logout
     }),
     [user, loading]
@@ -84,4 +75,3 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-

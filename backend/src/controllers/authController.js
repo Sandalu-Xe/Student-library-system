@@ -57,39 +57,6 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const socialLogin = async (req, res, next) => {
-  try {
-    const { email, name, provider, providerId } = req.body;
-
-    if (!email || !name || !provider || !providerId) {
-      return res.status(400).json({ message: "Email, name, provider, and providerId are required" });
-    }
-
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      const userCount = await User.countDocuments();
-      // Generate a long random password for passwordless/social accounts
-      const randomPassword = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      user = await User.create({
-        name,
-        email,
-        password: randomPassword,
-        role: userCount === 0 ? "admin" : "student"
-      });
-    }
-
-    res.json({
-      user,
-      token: generateToken(user)
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const getMe = async (req, res) => {
   res.json({ user: req.user });
 };
-
-

@@ -46,7 +46,12 @@ const Header = () => {
         <div className="profile-chip">
           <span>{user.name}</span>
           <small>{user.role}</small>
-          <button className="icon-button" onClick={handleLogout} title="Logout" type="button">
+          <button
+            className="icon-button"
+            onClick={handleLogout}
+            title="Sign out"
+            style={{ gridRow: "span 2" }}
+          >
             <LogOut size={18} />
           </button>
         </div>

@@ -17,8 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-      minlength: 6
+      required: true
     },
     role: {
       type: String,
@@ -52,4 +51,3 @@ userSchema.methods.toJSON = function toJSON() {
 const User = mongoose.model("User", userSchema);
 
 export default User;
-
