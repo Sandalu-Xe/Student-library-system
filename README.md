@@ -24,6 +24,10 @@ student-library-system/
 - MongoDB Atlas connection through environment variables
 - Axios integration between React and Express
 
+## Documentation
+
+- [ER Diagram](docs/ERD.md)
+
 ## Backend Setup
 
 ```bash
@@ -65,4 +69,3 @@ The frontend runs on `http://localhost:5173` and calls the backend at `http://lo
 - `GET /api/borrowings`
 - `POST /api/borrowings`
 - `PATCH /api/borrowings/:id/return`
-
