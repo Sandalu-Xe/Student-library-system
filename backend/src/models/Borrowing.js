@@ -25,8 +25,8 @@ const borrowingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["borrowed", "returned"],
-      default: "borrowed"
+      enum: ["booked", "borrowed", "returned"],
+      default: "booked"
     }
   },
   { timestamps: true }

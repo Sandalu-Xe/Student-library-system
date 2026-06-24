@@ -91,10 +91,10 @@ const Books = () => {
 
     try {
       await api.post("/borrowings", { bookId });
-      setMessage("Book borrowed");
+      setMessage(isStaff ? "Book borrowed successfully" : "Book booking requested successfully");
       await loadBooks();
     } catch (apiError) {
-      setError(apiError.response?.data?.message || "Borrow failed");
+      setError(apiError.response?.data?.message || "Booking failed");
     }
   };
 
@@ -171,7 +171,7 @@ const Books = () => {
                     onClick={() => borrowBook(book._id)}
                     disabled={book.availableCopies < 1}
                   >
-                    Borrow
+                    {isStaff ? "Borrow" : "Book"}
                   </button>
                   {isStaff && (
                     <>

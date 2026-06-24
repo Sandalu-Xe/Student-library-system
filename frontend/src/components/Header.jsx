@@ -8,7 +8,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -57,13 +57,8 @@ const Header = () => {
         </div>
       ) : (
         <div className="auth-header-actions">
-          <Link to="/login" className="secondary-button auth-btn">
-            <LogIn size={16} />
-            Sign In
-          </Link>
-          <Link to="/register" className="primary-button auth-btn">
-            <UserPlus size={16} />
-            Register
+          <Link to="/" className="primary-button auth-btn">
+            Choose Portal
           </Link>
         </div>
       )}

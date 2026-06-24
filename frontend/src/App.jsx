@@ -30,7 +30,7 @@ const App = () => {
   return (
     <Routes>
       <Route
-        path="/login"
+        path="/student/login"
         element={
           <PublicOnly>
             <Login />
@@ -38,13 +38,31 @@ const App = () => {
         }
       />
       <Route
-        path="/register"
+        path="/student/register"
         element={
           <PublicOnly>
             <Register />
           </PublicOnly>
         }
       />
+      <Route
+        path="/admin/login"
+        element={
+          <PublicOnly>
+            <Login />
+          </PublicOnly>
+        }
+      />
+      <Route
+        path="/admin/register"
+        element={
+          <PublicOnly>
+            <Register />
+          </PublicOnly>
+        }
+      />
+      <Route path="/login" element={<Navigate to="/student/login" replace />} />
+      <Route path="/register" element={<Navigate to="/student/register" replace />} />
       <Route
         path="/"
         element={

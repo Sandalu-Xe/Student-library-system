@@ -24,7 +24,8 @@ const seedDatabase = async () => {
           name: "John Student",
           email: "student@library.com",
           password: "password123",
-          role: "student"
+          role: "student",
+          studentId: "STU001"
         }
       ]);
       console.log("Default users seeded (Passwords: password123):");

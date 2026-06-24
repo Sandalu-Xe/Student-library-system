@@ -3,7 +3,7 @@ import generateToken from "../utils/generateToken.js";
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role, studentId } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email, and password are required" });
@@ -19,11 +19,24 @@ export const register = async (req, res, next) => {
     }
 
     const userCount = await User.countDocuments();
+    const assignedRole = role || (userCount === 0 ? "admin" : "student");
+
+    if (assignedRole === "student") {
+      if (!studentId) {
+        return res.status(400).json({ message: "Student ID is required for student registration" });
+      }
+      const existingStudentId = await User.findOne({ studentId });
+      if (existingStudentId) {
+        return res.status(409).json({ message: "Student ID is already registered" });
+      }
+    }
+
     const user = await User.create({
       name,
       email,
       password,
-      role: userCount === 0 ? "admin" : "student"
+      role: assignedRole,
+      studentId: assignedRole === "student" ? studentId : undefined
     });
 
     res.status(201).json({

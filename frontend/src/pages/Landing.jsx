@@ -1,4 +1,4 @@
-import { BookOpen, Calendar, Shield, Users } from "lucide-react";
+import { BookOpen, Calendar, GraduationCap, Shield, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
@@ -10,25 +10,56 @@ const Landing = () => {
       {/* Hero Section */}
       <header className="landing-hero">
         <div className="hero-content">
-          <span className="badge">Now Live</span>
+          <span className="badge">MERN Stack</span>
           <h1>Welcome to the Digital Library Hub</h1>
           <p className="hero-subtitle">
-            A comprehensive, MERN-stack platform to streamline book cataloging, user management, and automated borrowing records.
+            A comprehensive platform to streamline book cataloging, user management, and student borrowing requests.
           </p>
-          <div className="hero-actions">
+          <div className="hero-actions-container">
             {user ? (
-              <Link to="/dashboard" className="primary-button hero-btn">
-                Go to Dashboard
-              </Link>
+              <div className="hero-actions">
+                <Link to="/dashboard" className="primary-button hero-btn">
+                  Go to Dashboard
+                </Link>
+              </div>
             ) : (
-              <>
-                <Link to="/login" className="primary-button hero-btn">
-                  Sign In
-                </Link>
-                <Link to="/register" className="secondary-button hero-btn">
-                  Create Account
-                </Link>
-              </>
+              <div className="portals-grid">
+                <article className="portal-card student-portal-card">
+                  <div className="portal-card-header">
+                    <div className="portal-icon-box">
+                      <GraduationCap size={28} />
+                    </div>
+                    <h3>Student Portal</h3>
+                  </div>
+                  <p>Browse our catalog, check book availability, and create bookings to borrow books.</p>
+                  <div className="portal-links">
+                    <Link to="/student/login" className="primary-button portal-btn">
+                      Student Sign In
+                    </Link>
+                    <Link to="/student/register" className="secondary-button portal-btn">
+                      Register Student
+                    </Link>
+                  </div>
+                </article>
+
+                <article className="portal-card admin-portal-card">
+                  <div className="portal-card-header">
+                    <div className="portal-icon-box admin-icon-box">
+                      <Shield size={28} />
+                    </div>
+                    <h3>Admin Portal</h3>
+                  </div>
+                  <p>Perform catalog CRUD, approve/cancel borrowings, and search books by Student ID.</p>
+                  <div className="portal-links">
+                    <Link to="/admin/login" className="primary-button portal-btn admin-theme-btn">
+                      Admin Sign In
+                    </Link>
+                    <Link to="/admin/register" className="secondary-button portal-btn">
+                      Register Admin
+                    </Link>
+                  </div>
+                </article>
+              </div>
             )}
           </div>
         </div>

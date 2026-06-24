@@ -109,9 +109,9 @@ export const deleteBook = async (req, res, next) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    const activeBorrowing = await Borrowing.exists({ book: book._id, status: "borrowed" });
+    const activeBorrowing = await Borrowing.exists({ book: book._id, status: { $in: ["borrowed", "booked"] } });
     if (activeBorrowing) {
-      return res.status(400).json({ message: "Cannot delete a book that is currently borrowed" });
+      return res.status(400).json({ message: "Cannot delete a book that is currently borrowed or booked" });
     }
 
     await book.deleteOne();
